@@ -83,6 +83,13 @@
             bindings = <&mo 1>, <&mo 3>;
         };
 
+        // Hold for layer 2, double tap and hold for layer 4
+        mo2_mo4: mo2_mo4 {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <400>;
+            bindings = <&mo 2>, <&mo 4>;
+        };
 
         // Hold for layer 2, double tap and hold to toggle layer 4
         mo2_holdtog4: mo2_holdtog4 {
@@ -105,25 +112,36 @@
         };
     };
 
+    macros {
+        ctrl_alt_del: ctrl_alt_del {
+          compatible = "zmk,behavior-macro";
+          #binding-cells = <0>;
+          bindings
+              = <&kp LC(LA(DEL))>
+              ;
+        };
+
+    };
+
     keymap {
         compatible = "zmk,keymap";
 
         default_layer {
             display-name = "QWERTY";
             bindings = <
-//    ┌──────┬───┬───┬──────────┬─────────┬─────┐   ┌──────┬──────────────┬──────────┬───┬───┬──────┐
-//    │ tab  │ Q │ W │    E     │    R    │  T  │   │  Y   │      U       │    I     │ O │ P │ ent  │
-//    ├──────┼───┼───┼──────────┼─────────┼─────┤   ├──────┼──────────────┼──────────┼───┼───┼──────┤
-//    │ lsft │ A │ S │    D     │    F    │  G  │   │  H   │      J       │    K     │ L │ ; │  '   │
-//    ├──────┼───┼───┼──────────┼─────────┼─────┤   ├──────┼──────────────┼──────────┼───┼───┼──────┤
-//    │ lctl │ Z │ X │    C     │    V    │  B  │   │  N   │      M       │    ,     │ . │ / │ rsft │
-//    └──────┴───┴───┼──────────┼─────────┼─────┤   ├──────┼──────────────┼──────────┼───┴───┴──────┘
-//                   │ &gui_alt │ mo1_mo3 │ spc │   │ bspc │ mo2_holdtog4 │ &alt_gui │
-//                   └──────────┴─────────┴─────┘   └──────┴──────────────┴──────────┘
-  &kp TAB     &kp Q   &kp W   &kp E      &kp R      &kp T           &kp Y      &kp U           &kp I       &kp O     &kp P      &kp ENTER
-  &kp LSHFT   &kp A   &kp S   &kp D      &kp F      &kp G           &kp H      &kp J           &kp K       &kp L     &kp SEMI   &kp SQT
-  &kp LCTRL   &kp Z   &kp X   &kp C      &kp V      &kp B           &kp N      &kp M           &kp COMMA   &kp DOT   &kp FSLH   &kp RSHFT
-                              &gui_alt   &mo1_mo3   &kp SPACE       &kp BSPC   &mo2_holdtog4   &alt_gui
+//    ┌──────┬───┬───┬──────────┬─────────┬─────┐   ┌──────┬─────────┬──────────┬───┬───┬──────┐
+//    │ tab  │ Q │ W │    E     │    R    │  T  │   │  Y   │    U    │    I     │ O │ P │ ent  │
+//    ├──────┼───┼───┼──────────┼─────────┼─────┤   ├──────┼─────────┼──────────┼───┼───┼──────┤
+//    │ lsft │ A │ S │    D     │    F    │  G  │   │  H   │    J    │    K     │ L │ ; │  '   │
+//    ├──────┼───┼───┼──────────┼─────────┼─────┤   ├──────┼─────────┼──────────┼───┼───┼──────┤
+//    │ lctl │ Z │ X │    C     │    V    │  B  │   │  N   │    M    │    ,     │ . │ / │ rsft │
+//    └──────┴───┴───┼──────────┼─────────┼─────┤   ├──────┼─────────┼──────────┼───┴───┴──────┘
+//                   │ &gui_alt │ mo1_mo3 │ spc │   │ bspc │ mo2_mo4 │ &alt_gui │
+//                   └──────────┴─────────┴─────┘   └──────┴─────────┴──────────┘
+  &kp TAB     &kp Q   &kp W   &kp E      &kp R      &kp T           &kp Y      &kp U      &kp I       &kp O     &kp P      &kp ENTER
+  &kp LSHFT   &kp A   &kp S   &kp D      &kp F      &kp G           &kp H      &kp J      &kp K       &kp L     &kp SEMI   &kp SQT
+  &kp LCTRL   &kp Z   &kp X   &kp C      &kp V      &kp B           &kp N      &kp M      &kp COMMA   &kp DOT   &kp FSLH   &kp RSHFT
+                              &gui_alt   &mo1_mo3   &kp SPACE       &kp BSPC   &mo2_mo4   &alt_gui
             >;
         };
 
@@ -187,19 +205,19 @@
         mouse_layer {
             display-name = "MOUSE";
             bindings = <
-//    ┌─────┬─────┬────────────────┬────────────────┬────────────────┬──────┐   ┌──────┬────────────────┬──────────────┬──────┬────────────┬───────────┐
-//    │     │ del │                │  &mmv MOVE_up  │                │ pscr │   │ mclk │      lclk      │     rclk     │      │            │           │
-//    ├─────┼─────┼────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┼────────────┼───────────┤
-//    │     │     │ &mmv MOVE_left │ &mmv MOVE_down │ &mmv MOVE_rght │      │   │ mbck │ &msc SCRL_down │ &msc SCRL_up │ mfwd │ &PgUp_Home │ &PgDn_End │
-//    ├─────┼─────┼────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┼────────────┼───────────┤
-//    │     │     │                │                │                │      │   │      │                │              │      │            │           │
-//    └─────┴─────┴────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┴────────────┴───────────┘
-//                                 │                │                │      │   │      │                │              │
-//                                 └────────────────┴────────────────┴──────┘   └──────┴────────────────┴──────────────┘
-  &trans   &kp DEL   &trans           &mmv MOVE_UP     &trans            &kp PRINTSCREEN       &mkp MCLK   &mkp LCLK        &mkp RCLK      &trans     &trans       &trans
-  &trans   &trans    &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_RIGHT   &trans                &mkp MB4    &msc SCRL_DOWN   &msc SCRL_UP   &mkp MB5   &PgUp_Home   &PgDn_End
-  &trans   &trans    &trans           &trans           &trans            &trans                &trans      &trans           &trans         &trans     &trans       &trans
-                                      &trans           &trans            &trans                &trans      &trans           &trans
+//    ┌───────────────┬─────┬────────────────┬────────────────┬────────────────┬──────┐   ┌──────┬────────────────┬──────────────┬──────┬────────────┬───────────┐
+//    │ &ctrl_alt_del │     │                │  &mmv MOVE_up  │                │ pscr │   │ mclk │      lclk      │     rclk     │      │            │           │
+//    ├───────────────┼─────┼────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┼────────────┼───────────┤
+//    │               │     │ &mmv MOVE_left │ &mmv MOVE_down │ &mmv MOVE_rght │      │   │ mbck │ &msc SCRL_down │ &msc SCRL_up │ mfwd │ &PgUp_Home │ &PgDn_End │
+//    ├───────────────┼─────┼────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┼────────────┼───────────┤
+//    │               │     │      del       │                │                │      │   │      │                │              │      │            │           │
+//    └───────────────┴─────┴────────────────┼────────────────┼────────────────┼──────┤   ├──────┼────────────────┼──────────────┼──────┴────────────┴───────────┘
+//                                           │                │                │      │   │      │                │              │
+//                                           └────────────────┴────────────────┴──────┘   └──────┴────────────────┴──────────────┘
+  &ctrl_alt_del   &trans   &trans           &mmv MOVE_UP     &trans            &kp PRINTSCREEN       &mkp MCLK   &mkp LCLK        &mkp RCLK      &trans     &trans       &trans
+  &trans          &trans   &mmv MOVE_LEFT   &mmv MOVE_DOWN   &mmv MOVE_RIGHT   &trans                &mkp MB4    &msc SCRL_DOWN   &msc SCRL_UP   &mkp MB5   &PgUp_Home   &PgDn_End
+  &trans          &trans   &kp DEL          &trans           &trans            &trans                &trans      &trans           &trans         &trans     &trans       &trans
+                                            &trans           &trans            &trans                &trans      &trans           &trans
             >;
         };
     };
