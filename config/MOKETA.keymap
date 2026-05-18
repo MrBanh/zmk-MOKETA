@@ -66,12 +66,12 @@
             bindings = <&kp LGUI>, <&kp LALT>;
         };
 
-        // Tap for Left Alt, Double Tap for Right GUI
+        // Tap for Right Alt, Double Tap for Right GUI
         alt_gui: alt_gui {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
-            bindings = <&kp LALT>, <&kp RGUI>;
+            bindings = <&kp RALT>, <&kp RGUI>;
         };
         
 
